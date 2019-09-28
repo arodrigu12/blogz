@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            {{title}}
-        </title>
-        <style>
-            .error {
-                color: red;
-            }
-        </style>
-    </head>
-    <body>
 
-        <div>
-            <a href="/blog">Main Blog Page</a>
-            <a href="/newpost">Add a Blog Entry</a>
-        </div>
+<head>
+    <title>
+        {{title}}
+    </title>
+    <style type="text/css">
 
-        {% block content %}
-        {% endblock %}
+        .error {
+            color: red;
+            font-style: italic;
+        }
 
-    </body>
+        .navlinks span:first-child {
+            margin-right: 50px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="navlinks">
+        <span><a href="/blog">Main Blog Page</a></span>
+        <span><a href="/newpost">Add a Blog Entry</a></span>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+
 </html>

@@ -8,7 +8,10 @@
                     <td><label for="title">Title for your new blog:</label></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="title"></td>
+                    <td><input type="text" name="title" value="{{blog_title}}"></td>
+                </tr>
+                <tr>
+                    <td class="error">{{no_title_error}}</td>
                 </tr>
 
                 <tr>
@@ -16,30 +19,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <textarea name="body" rows="5" cols="33"></textarea>
+                        <textarea name="body" rows="5" cols="33">{{body}}</textarea>
                     </td>
+                </tr>
+                <tr>
+                    <td class="error">{{no_body_error}}</td>
                 </tr>
             </table>
             <input type="submit" value="Add Task">
         </form>
-        <hr>
-
-        {% if blog_entries|length == 0 %}
-        <p>No entries yet</p>
-
-        {% else %}
-
-            <ul>
-
-                {% for entry in blog_entries %}
-                <li>
-                    <h2>{{entry.title}}</h2>
-                    <p>{{entry.body}}</p>
-                </li>
-                {% endfor %}
-
-            </ul>
-
-        {% endif %}
 
 {% endblock %}
