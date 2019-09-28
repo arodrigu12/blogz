@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+        <h1>Add a Blog Entry</h1>
+        <form method="POST">
+            <table>
+                <tr>
+                    <td><label for="title">Title for your new blog:</label></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="title"></td>
+                </tr>
+
+                <tr>
+                    <td><label for="body">Your new blog:</label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea name="body" rows="5" cols="33"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Add Task">
+        </form>
+        <hr>
+
+        {% if blog_entries|length == 0 %}
+        <p>No entries yet</p>
+
+        {% else %}
+
+            <ul>
+
+                {% for entry in blog_entries %}
+                <li>
+                    <h2>{{entry.title}}</h2>
+                    <p>{{entry.body}}</p>
+                </li>
+                {% endfor %}
+
+            </ul>
+
+        {% endif %}
+
+{% endblock %}
