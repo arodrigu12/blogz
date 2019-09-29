@@ -1,0 +1,46 @@
+.error {
+    color: red;
+    font-style: italic;
+}
+
+.navlinks span:first-child {
+    margin-right: 50px;
+}
+/*
+h1 {
+    text-align: center;
+}
+
+p {
+    font-size: 1.2em;
+}
+*/
+body {
+	color: #102536;
+	background: lightgreen;
+	font-family: Tahoma, "Lucida Grande", Arial, sans-serif;
+	/*font-size: 62.5%;*/
+}
+
+h1 {
+	/*font-size: 2.4em;*/
+	font-size: 2.0em;
+    color:#14556B;
+    text-align: center;
+}
+
+h2 {
+	font-size: 1.5em;
+	color: #993;
+	margin-bottom: 5px;
+}
+
+p {
+	font-size: 1.2em;
+	margin-top: 5px;
+	margin-bottom: 0;
+	text-indent: 2em;
+	line-height: 150%;
+	margin-top: 0;
+	margin-bottom: 5px;
+}
