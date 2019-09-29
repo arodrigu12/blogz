@@ -51,10 +51,20 @@ def newpost():
 
 @app.route('/blog')
 def blog():
-    blog_entries = Blog.query.all()
 
-    return render_template('blog.html', title="Build-a-Blog", 
-        blog_entries=blog_entries)
+    blog_id = request.args.get('id')
+
+    if not blog_id:
+        blog_entries = Blog.query.all()
+
+        return render_template('blog.html', title="Build-a-Blog", 
+            blog_entries=blog_entries)
+
+    else:
+
+        blog_obj = Blog.query.filter_by(id=blog_id).first()
+        return render_template('display_blog.html', title="Build-a-Blog", 
+            blog_obj=blog_obj)
 
 
 if __name__ == '__main__':
