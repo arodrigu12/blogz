@@ -2,11 +2,11 @@
     color: red;
     font-style: italic;
 }
-
+/*
 .navlinks span:first-child {
     margin-right: 50px;
 }
-/*
+
 h1 {
     text-align: center;
 }
@@ -43,4 +43,19 @@ p {
 	line-height: 150%;
 	margin-top: 0;
 	margin-bottom: 5px;
+}
+
+div ul {
+    padding: 0;
+    display: inline-block;
+}
+
+div ul li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+div #navlinks {
+    float: right;
 }

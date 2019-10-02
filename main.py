@@ -1,18 +1,20 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
+from helpers import is_valid
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:password@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
+app.secret_key = 'y337kGcys&zP3B'
 
 db = SQLAlchemy(app)
 
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(60))
-    body = db.Column(db.String(250))
+    title = db.Column(db.String(120))
+    body = db.Column(db.String(1000))
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     def __init__(self, title, body, owner):
@@ -30,31 +32,104 @@ class User(db.Model):
     #such that the owner property is equal to the specific user under consideration
     blogs = db.relationship('Blog', backref='owner')
 
-    def __init__(self, email, password):
+    def __init__(self, username, password):
 
-        self.email = email
+        self.username = username
         self.password = password
 
 @app.route('/login', methods=['POST', 'GET'])
 
 def login():
 
+    username=''
+    password=''
+    username_error=''
+    pwd_error=''
+
     if request.method == 'POST':
-        username= request.form['username']
-        password = request.form['password']
+        username= request.form['username'].strip()
+        password = request.form['password'].strip()
         user = User.query.filter_by(username=username).first()
 
-        if user and user.password == password:
-            #remember that user has logged in
-            session['email'] = email
-            flash("Logged in")
-            return redirect('/')
+        if not user:
+            username_error = 'User name does not exist'
+
+        elif user.password != password:
+            pwd_error = 'Password is incorrect'
+            password = ''
+
         else:
-            flash("User password incorrect or user does not exist", 'error')
+            #remember that user has logged in
+            session['username'] = username          
+            return redirect('/newpost')
 
+    return render_template('login.html',
+        title='Blogz',
+        username=username,
+        password=password,
+        username_error=username_error,
+        pwd_error=pwd_error)
 
-    return render_template('login.html')
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
 
+    username = ''
+    password = ''
+    username_error=''
+    pwd_error=''
+    verify_pwd_error=''
+    error_condition=False
+
+    if request.method == 'POST':
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
+        verify_pwd = request.form['verify']
+
+        if not username:
+            username_error="You must provide a username"
+            error_condition=True
+        elif not is_valid(username):
+            username_error="Provide valid username of 3-20 characters (numbers and letters only)"
+            error_condition=True
+        else:
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                username_error = 'Username already exists'
+                error_condition=True
+
+        if not password:
+            pwd_error="You must provide a password"
+            error_condition=True
+        elif not is_valid(password):
+            pwd_error="You must provide a valid password of 3-20 characters (numbers and letters only)"
+            error_condition=True
+        elif password != verify_pwd:
+            verify_pwd_error="Passwords do not match"
+            error_condition=True
+
+        if not error_condition:
+            new_user = User(username, password)      
+            db.session.add(new_user)
+            db.session.commit()
+            #"remember" the user
+            session['username'] = username
+            return redirect('/newpost')
+        else:
+            #Always clear password fields under any error conditions, for security.
+            password=''
+
+    return render_template('signup.html',
+        title='Blogz',
+        username=username,
+        password=password,
+        username_error=username_error,
+        pwd_error=pwd_error,
+        verify_pwd_error=verify_pwd_error)
+
+@app.route('/logout')
+def logout():
+    del session['username']
+    return redirect('/blog')
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -78,7 +153,7 @@ def newpost():
             error_condition = True
 
         if not error_condition:
-            owner = User.query.filter_by(email=session['email']).first()
+            owner = User.query.filter_by(username=session['username']).first()
             new_blog = Blog(title, body, owner)
             db.session.add(new_blog)
             db.session.commit()

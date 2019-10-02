@@ -5,15 +5,28 @@
     <title>
         {{title}}
     </title>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
 
 </head>
 
 <body>
-
+    <!--
     <div class="navlinks">
         <span><a href="/blog">Main Blog Page</a></span>
         <span><a href="/newpost">Add a Blog Entry</a></span>
+    </div>
+-->
+
+    <div>
+        <ul id="navlinks">
+            <li><a href="/login">Login</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog">All Posts</a></li>
+            <li><a href="/newpost">New Post</a></li>
+        </ul>
     </div>
 
     {% block content %}
