@@ -37,6 +37,15 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+#Gives as a chance to filter all incoming requests
+@app.before_request
+def require_login():
+    #Pages user can see without loging in
+    allowed_routes = ['login', 'signup', 'blog', 'index']
+
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
+
 @app.route('/login', methods=['POST', 'GET'])
 
 def login():
@@ -160,25 +169,39 @@ def newpost():
 
             return redirect("/blog?id=" + str(new_blog.id))
 
-    return render_template('newpost.html', title="Build-a-Blog",
+    return render_template('newpost.html', title="Blogz",
         no_title_error=no_title_error, no_body_error=no_body_error, body=body, blog_title=title)
 
 @app.route('/blog')
 def blog():
 
     blog_id = request.args.get('id')
+    blogger_id = request.args.get('user')
 
-    if not blog_id:
+    if not blog_id and not blogger_id:
         blog_entries = Blog.query.all()
 
-        return render_template('blog.html', title="Build-a-Blog", 
+        return render_template('blog.html', title="Blogz", 
             blog_entries=blog_entries)
 
-    else:
+    elif blog_id: #Show blog individually
 
         blog_obj = Blog.query.filter_by(id=blog_id).first()
-        return render_template('display_blog.html', title="Build-a-Blog", 
+        return render_template('display_blog.html', title="Blogz", 
             blog_obj=blog_obj)
+
+    else: #Show a single blogger's posts
+
+        blogger_posts = Blog.query.filter_by(owner_id=blogger_id).all()
+        return render_template('display_blogger_posts.html',
+            title="Blogz", blogger_posts=blogger_posts)
+
+@app.route('/')
+def index():
+
+    bloggers = User.query.all()
+    return render_template('index.html', title='Blogz', bloggers=bloggers)
+
 
 
 if __name__ == '__main__':

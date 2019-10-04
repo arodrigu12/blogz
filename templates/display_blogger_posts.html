@@ -3,14 +3,14 @@
 
 <h1>Blogz</h1>
 
-{% if blog_entries|length == 0 %}
+{% if blogger_posts|length == 0 %}
 <p>No entries yet</p>
 
 {% else %}
 
     <ul>
 
-        {% for entry in blog_entries %}
+        {% for entry in blogger_posts %}
         <li>
             <h2><a href="./blog?id={{entry.id}}">{{entry.title}}</a></h2>
             <p>{{entry.body}}</p>
