@@ -36,6 +36,10 @@ h2 {
 	margin-bottom: 5px;
 }
 
+ul li h2 a {
+	color: #993;
+}
+
 p {
 	font-size: 1.2em;
 	margin-top: 5px;

@@ -19,8 +19,13 @@
 
     <div>
         <ul id="navlinks">
-            <li><a href="/login">Login</a></li>
-            <li><a href="/logout">Logout</a></li>
+            {% if 'username' in session %}
+                <li>{{ session['username'] }}</li>
+                <li><a href="/logout">Logout</a></li>
+            {% else %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/logout">Logout</a></li>
+            {% endif %}
         </ul>
         <ul>
             <li><a href="/">Home</a></li>
