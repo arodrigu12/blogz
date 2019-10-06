@@ -20,6 +20,7 @@ body {
 	background: lightgreen;
 	font-family: Tahoma, "Lucida Grande", Arial, sans-serif;
 	/*font-size: 62.5%;*/
+	font-size: 80%;
 }
 
 h1 {
@@ -58,4 +59,18 @@ div ul li {
 
 div #navlinks {
     float: right;
+}
+
+p.byline {
+	color: #73afb7;
+	font-size: 1em;
+	margin-bottom: 10px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	font-variant: small-caps;
+	text-indent: 0;
+}
+
+p.byline a {
+	color: #73afb7;
 }

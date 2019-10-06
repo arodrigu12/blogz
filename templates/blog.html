@@ -16,7 +16,7 @@
             <p>{{entry.body}}</p>
         </li>
 
-        <hr>
+        <p class="byline">written by <a href="./blog?user={{entry.owner.id}}">{{entry.owner.username}}</a></p>
         {% endfor %}
 
     </ul>

@@ -3,6 +3,6 @@
 
 <h1>{{blog_obj.title}}</h1>
 <p>{{blog_obj.body}}</p>
-
+<p class="byline">written by <a href="./blog?user={{blog_obj.owner.id}}">{{blog_obj.owner.username}}</a></p>
 
 {% endblock %}
