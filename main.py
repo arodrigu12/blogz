@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template, session
 from flask_sqlalchemy import SQLAlchemy
-from helpers import is_valid
+from helpers import is_valid, make_pw_hash, check_pw_hash
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -27,7 +27,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120))
+    pw_hash = db.Column(db.String(120))
     #SQLAlchemy should populate blogs list below with items from Blog class
     #such that the owner property is equal to the specific user under consideration
     blogs = db.relationship('Blog', backref='owner')
@@ -35,7 +35,7 @@ class User(db.Model):
     def __init__(self, username, password):
 
         self.username = username
-        self.password = password
+        self.pw_hash = make_pw_hash(password)
 
 #Gives as a chance to filter all incoming requests
 @app.before_request
@@ -63,7 +63,7 @@ def login():
         if not user:
             username_error = 'User name does not exist'
 
-        elif user.password != password:
+        elif not check_pw_hash(password, user.pw_hash):
             pwd_error = 'Password is incorrect'
             password = ''
 
